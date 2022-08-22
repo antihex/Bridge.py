@@ -156,6 +156,7 @@ class Game:
     def guiDealCards(self):
 
         self.drawCards()
+        self.p1.opener()
         # print(os.listdir())
         global cardImage1, cardImage2, cardImage3, cardImage4, cardImage5,cardImage6,cardImage7,cardImage8,cardImage9,cardImage10,cardImage11,cardImage12,cardImage13
         for x in range(len(self.p1.cards)):
@@ -578,6 +579,69 @@ class Player:
             return True
         except:
             return False
+
+    def opener(self):
+        bid = "pass"
+        
+        # print(self.rawPoints)
+        # print(Card(12,2))
+        if self.rawPoints >= 22:
+            bid = "2 Clubs"
+        elif self.rawPoints >=20:
+            bid = "2 NT"
+        elif self.spadePoints >= 13 and self.spades >= 5 and self.rawPoints >= 11:
+            bid = "1 Spade"
+        elif self.heartPoints >= 13 and self.hearts >= 5 and self.rawPoints >= 11:            
+            bid = "1 Heart"
+        elif self.rawPoints >= 15: 
+            if ((self.spades >= 2 and self.spades <=4) and (self.hearts >= 2 and self.hearts <=4) and (self.diamonds >=2 and self.diamonds <=5) and (self.clubs >=2 and self.clubs <=5)):
+                if (not(self.spades == 2 and self.hearts == 2 and self.diamonds == 2 and self.clubs == 2)):
+                    bid = "1 NT"
+                elif (self.spades == 2 and not (self.hearts == 2 or self.diamonds == 2 or self.clubs == 2)): 
+                    bid = "1 NT"
+                elif (self.hearts == 2 and not (self.spades == 2 or self.diamonds == 2 or self.clubs == 2)):
+                    bid = "1 NT"
+                elif (self.diamonds == 2 and not (self.spades == 2 or self.hearts == 2 or self.clubs == 2)):
+                    bid = "1 NT"
+                elif (self.clubs == 2 and not (self.spades == 2 or self.hearts == 2 or self.diamonds == 2)):
+                    bid = "1 NT"
+                
+        if not(bid == "pass"):
+            bid = bid
+        elif self.diamondPoints >= 13 and self.diamonds >= 4 and self.rawPoints >= 11:
+            bid = "1 Diamond"
+        elif self.rawPoints >= 12:
+            bid = "1 Club"
+        elif self.rawPoints < 11:
+            if self.spades >= 7 and ((self.hasCard(14,0) and (self.hasCard(13,0) or self.hasCard(12,0) or self.hasCard(11,0))) or (self.hasCard(13,0) and ((self.hasCard(12,0)) or self.hasCard(11,0)))):
+                bid = "3 Spades"
+            elif self.hearts >= 7 and ((self.hasCard(14,1) and (self.hasCard(13,1) or self.hasCard(12,1) or self.hasCard(11,1))) or (self.hasCard(13,1) and ((self.hasCard(12,1)) or self.hasCard(11,1)))):
+                bid = "3 Hearts"
+            elif self.clubs >= 7 and ((self.hasCard(14,2) and (self.hasCard(13,2) or self.hasCard(12,2) or self.hasCard(11,2))) or (self.hasCard(13,2) and ((self.hasCard(12,2)) or self.hasCard(11,2)))):
+                bid = "3 Clubs"
+            elif self.diamonds >= 7 and ((self.hasCard(14,3) and (self.hasCard(13,3) or self.hasCard(12,3) or self.hasCard(11,3))) or (self.hasCard(13,3) and ((self.hasCard (12,3)) or self.hasCard(11,3)))):
+                bid = "3 Diamonds"
+            elif self.spades >= 6 and ((self.hasCard(14,0) and (self.hasCard(13,0) or self.hasCard(12,0) or self.hasCard(11,0))) or (self.hasCard(13,0) and ((self.hasCard(12,0)) or self.hasCard(11,0)))):
+                bid = "2 Spades"
+            elif self.hearts >= 6 and ((self.hasCard(14,1) and (self.hasCard(13,1) or self.hasCard(12,1) or self.hasCard(11,1))) or (self.hasCard(13,1) and ((self.hasCard(12,1)) or self.hasCard(11,1)))):
+                bid = "2 Hearts"
+            # elif self.clubs >= 6 and ((self.hasCard(14,2) and (self.hasCard(13,2) or self.hasCard(12,2) or self.hasCard(11,2))) or (self.hasCard(13,2) and ((self.hasCard(12,2)) or self.hasCard(11,2)))):
+                # bid = "2 Clubs"           #NO WEAK 2 Clubs
+            elif self.diamonds >= 6 and ((self.hasCard(14,3) and (self.hasCard(13,3) or self.hasCard(12,3) or self.hasCard(11,3))) or (self.hasCard(13,3) and ((self.hasCard(12,3)) or self.hasCard(11,3)))):
+                bid = "2 Diamonds"
+
+
+        print("Opening bid: " + bid)
+
+# Rules of bidding:
+#
+# 22+ points
+# 20-21 points
+# 12+ points
+#   5 card major
+# 15 + points and Balanced
+#       4 card diamond
+# 6+ suit and <10 points
 
 class Deck:
     def __init__(self):
